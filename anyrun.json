@@ -16,8 +16,8 @@
         }
     ],
     "license": "Copyright (c) 2021 Splunk Inc.",
-    "app_version": "1.0.0",
-    "utctime_updated": "2020-03-19T10:46:08.767570Z",
+    "app_version": "1.0.1",
+    "utctime_updated": "2021-11-10T19:41:30.000000Z",
     "package_name": "phantom_anyrun",
     "main_module": "anyrun_connector.py",
     "min_phantom_version": "4.9.39220",
