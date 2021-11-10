@@ -19,17 +19,21 @@ from __future__ import print_function, unicode_literals
 
 # Phantom App imports
 import phantom.app as phantom
-from phantom.base_connector import BaseConnector
-from phantom.action_result import ActionResult
 import phantom.rules as ph_rules
+from phantom.action_result import ActionResult
+from phantom.base_connector import BaseConnector
+
 try:
     from urllib.parse import unquote
 except:
     from urllib import unquote
-from anyrun_consts import *
-import requests
+
 import json
+
+import requests
 from bs4 import BeautifulSoup
+
+from anyrun_consts import *
 
 
 class RetVal(tuple):
@@ -394,8 +398,9 @@ class AnyrunConnector(BaseConnector):
 
 
 def main():
-    import pudb
     import argparse
+
+    import pudb
 
     pudb.set_trace()
 
