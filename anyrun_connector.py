@@ -256,7 +256,8 @@ class AnyrunConnector(BaseConnector):
             action_result.add_data(response['data'])
         except Exception as e:
             err = self._get_error_message_from_exception(e)
-            return action_result.set_status(phantom.APP_ERROR, "Error occurred while processing response from server. {}".format(err))
+            return action_result.set_status(phantom.APP_ERROR,
+                "Error occurred while processing response from server. {}".format(err))
 
         return action_result.set_status(phantom.APP_SUCCESS, "Successfully fetched report for {}".format(id))
 
@@ -272,10 +273,12 @@ class AnyrunConnector(BaseConnector):
             vault_meta_info = list(vault_meta_info)
             if not success or not vault_meta_info:
                 error_msg = " Error Details: {}".format(unquote(message)) if message else ''
-                return action_result.set_status(phantom.APP_ERROR, "{}. {}".format(ANYRUN_ERR_UNABLE_TO_FETCH_FILE.format(key="vault meta info"), error_msg))
+                return action_result.set_status(phantom.APP_ERROR,
+                    "{}. {}".format(ANYRUN_ERR_UNABLE_TO_FETCH_FILE.format(key="vault meta info"), error_msg))
         except Exception as e:
             err = self._get_error_message_from_exception(e)
-            return action_result.set_status(phantom.APP_ERROR, "{}. {}".format(ANYRUN_ERR_UNABLE_TO_FETCH_FILE.format(key="vault meta info"), err))
+            return action_result.set_status(phantom.APP_ERROR,
+                "{}. {}".format(ANYRUN_ERR_UNABLE_TO_FETCH_FILE.format(key="vault meta info"), err))
 
         try:
             # phantom vault file path
@@ -306,7 +309,8 @@ class AnyrunConnector(BaseConnector):
             action_result.add_data(response['data'])
         except Exception as e:
             err = self._get_error_message_from_exception(e)
-            return action_result.set_status(phantom.APP_ERROR, "Error occurred while processing response from server. {}".format(err))
+            return action_result.set_status(phantom.APP_ERROR,
+                "Error occurred while processing response from server. {}".format(err))
 
         return action_result.set_status(phantom.APP_SUCCESS, "Successfully detonated file")
 
@@ -337,7 +341,8 @@ class AnyrunConnector(BaseConnector):
             action_result.add_data(response['data'])
         except Exception as e:
             err = self._get_error_message_from_exception(e)
-            return action_result.set_status(phantom.APP_ERROR, "Error occurred while processing response from server. {}".format(err))
+            return action_result.set_status(phantom.APP_ERROR,
+                "Error occurred while processing response from server. {}".format(err))
 
         return action_result.set_status(phantom.APP_SUCCESS, "Successfully detonated URL ({})".format(obj_type))
 
