@@ -12,8 +12,7 @@
 # the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
 # either express or implied. See the License for the specific language governing permissions
 # and limitations under the License.
-#
-#
+
 # Python 3 Compatibility imports
 from __future__ import print_function, unicode_literals
 
@@ -60,6 +59,8 @@ class AnyrunConnector(BaseConnector):
         :return: error message
         """
 
+        error_code = ANYRUN_ERR_CODE_MSG
+        error_msg = ANYRUN_ERR_MSG_UNAVAILABLE
         try:
             if e.args:
                 if len(e.args) > 1:
@@ -68,24 +69,11 @@ class AnyrunConnector(BaseConnector):
                 elif len(e.args) == 1:
                     error_code = ANYRUN_ERR_CODE_MSG
                     error_msg = e.args[0]
-            else:
-                error_code = ANYRUN_ERR_CODE_MSG
-                error_msg = ANYRUN_ERR_MSG_UNAVAILABLE
         except:
             error_code = ANYRUN_ERR_CODE_MSG
             error_msg = ANYRUN_ERR_MSG_UNAVAILABLE
 
-        try:
-            if error_code in ANYRUN_ERR_CODE_MSG:
-                error_text = "Error Message: {0}".format(error_msg)
-            else:
-                error_text = "Error Code: {0}. Error Message: {1}".format(
-                    error_code, error_msg)
-        except:
-            self.debug_print(ANYRUN_PARSE_ERR_MSG)
-            error_text = ANYRUN_PARSE_ERR_MSG
-
-        return error_text
+        return "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
 
     def _process_empty_response(self, response, action_result):
         if response.status_code == 200:
@@ -219,11 +207,6 @@ class AnyrunConnector(BaseConnector):
     def _handle_test_connectivity(self, param):
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        # NOTE: test connectivity does _NOT_ take any parameters
-        # i.e. the param dictionary passed to this handler will be empty.
-        # Also typically it does not add any data into an action_result either.
-        # The status and progress messages are more important.
-
         self.save_progress("Connecting to endpoint")
         # make rest call
         ret_val, response = self._make_rest_call(
@@ -231,7 +214,6 @@ class AnyrunConnector(BaseConnector):
         )
 
         if phantom.is_fail(ret_val):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
             self.save_progress("Test Connectivity Failed")
             return action_result.get_status()
 
@@ -252,7 +234,6 @@ class AnyrunConnector(BaseConnector):
         )
 
         if phantom.is_fail(ret_val):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
             return action_result.get_status()
 
         self.save_progress("Successfully fetched report for {}".format(id))
@@ -305,7 +286,6 @@ class AnyrunConnector(BaseConnector):
         )
 
         if phantom.is_fail(ret_val):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
             return action_result.get_status()
 
         self.save_progress("Successfully detonated file")
@@ -337,7 +317,6 @@ class AnyrunConnector(BaseConnector):
         )
 
         if phantom.is_fail(ret_val):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
             return action_result.get_status()
 
         self.save_progress("Successfully detonated URL ({})".format(obj_type))

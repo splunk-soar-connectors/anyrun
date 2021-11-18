@@ -180,6 +180,7 @@
         {
             "action": "detonate file",
             "description": "Run the file in the sandbox and returns the ID of created task",
+            "verbose": "For the 'opt_timeout' parameter Size range: 10-660. For the 'obj_ext_cmd' Size range: 2-256.",
             "type": "investigate",
             "identifier": "detonate_file",
             "read_only": true,
@@ -195,61 +196,50 @@
                     "order": 0
                 },
                 "env_os": {
-                    "description": "Operation System",
-                    "verbose": "Allowed values: windows (default)",
+                    "description": "Operation System (Default: windows)",
                     "data_type": "string",
-                    "required": false,
-                    "primary": false,
                     "value_list": [
                         "windows"
                     ],
+                    "default": "windows",
                     "order": 1
                 },
                 "env_bitness": {
-                    "description": "Bitness of Operation System",
-                    "verbose": "Allowed values: 32 (default), 64",
+                    "description": "Bitness of Operation System (Default: 32)",
                     "data_type": "numeric",
-                    "required": false,
-                    "primary": false,
                     "value_list": [
-                        "32",
-                        "64"
+                        32,
+                        64
                     ],
+                    "default": 32,
                     "order": 2
                 },
                 "env_version": {
-                    "description": "Version of OS",
-                    "verbose": "Allowed values: vista, 7 (default), 8.1, 10",
+                    "description": "Version of OS (Default: 7)",
                     "data_type": "string",
-                    "required": false,
-                    "primary": false,
                     "value_list": [
                         "vista",
                         "7",
                         ".8.1",
                         "10"
                     ],
+                    "default": "7",
                     "order": 3
                 },
                 "env_type": {
-                    "description": "Environment preset type",
-                    "verbose": "Allowed values: clean, office, complete (default)",
+                    "description": "Environment preset type (Default: complete)",
                     "data_type": "string",
-                    "required": false,
-                    "primary": false,
                     "value_list": [
                         "clean",
                         "office",
                         "complete"
                     ],
+                    "default": "complete",
                     "order": 4
                 },
                 "opt_network_geo": {
-                    "description": "Geo location option",
-                    "verbose": "Allowed values: fastest (default), AU, BR, DE, CH, FR, KR, US, RU, GB, IT",
+                    "description": "Geo location option (Default: fastest)",
                     "data_type": "string",
-                    "required": false,
-                    "primary": false,
                     "value_list": [
                         "fastest",
                         "AU",
@@ -263,35 +253,29 @@
                         "GB",
                         "IT"
                     ],
+                    "default": "fastest",
                     "order": 5
                 },
                 "opt_timeout": {
-                    "description": "Timeout option (seconds)",
-                    "verbose": "Size range: 10-660. Default value: 60",
+                    "description": "Timeout option (seconds) (Default: 60)",
                     "data_type": "numeric",
-                    "required": false,
-                    "primary": false,
+                    "default": 60,
                     "order": 6
                 },
                 "opt_privacy_type": {
-                    "description": "Privacy settings",
-                    "verbose": "Allowed values: public, bylink (default), owner",
+                    "description": "Privacy settings (Default: bylink)",
                     "data_type": "string",
-                    "required": false,
-                    "primary": false,
                     "value_list": [
                         "bylink",
                         "public",
                         "owner"
                     ],
+                    "default": "bylink",
                     "order": 7
                 },
                 "obj_ext_startfolder": {
-                    "description": "Start object from",
-                    "verbose": "Allowed values: desktop, home, downloads, appdata, temp (default), windows, root",
+                    "description": "Start object from (Default: temp)",
                     "data_type": "string",
-                    "required": false,
-                    "primary": false,
                     "value_list": [
                         "desktop",
                         "home",
@@ -301,30 +285,24 @@
                         "windows",
                         "root"
                     ],
+                    "default": "temp",
                     "order": 8
                 },
                 "obj_ext_cmd": {
                     "description": "Optional command line",
-                    "verbose": "Size range: 2..256",
                     "data_type": "string",
-                    "required": false,
-                    "primary": false,
                     "order": 9
                 },
                 "obj_ext_elevateprompt": {
                     "description": "Encounter UAC prompts",
-                    "verbose": "Default value: true",
                     "data_type": "boolean",
-                    "required": false,
-                    "primary": false,
+                    "default": true,
                     "order": 10
                 },
                 "obj_ext_extension": {
                     "description": "Change extension to valid",
-                    "verbose": "Default value: true",
                     "data_type": "boolean",
-                    "required": false,
-                    "primary": false,
+                    "default": true,
                     "order": 11
                 }
             },
@@ -491,13 +469,13 @@
         {
             "action": "detonate url",
             "description": "Load a URL for analysis and returns the ID of created task",
+            "verbose": "For the 'obj_url' parameter Size range: 5-512. For the 'opt_timeout' Size range: 10-660. For the 'obj_ext_cmd' Size range: 2-256. For the 'obj_ext_useragent' Size range: 2-256.",
             "type": "investigate",
             "identifier": "detonate_url",
             "read_only": true,
             "parameters": {
                 "obj_url": {
                     "description": "URL to detonate",
-                    "verbose": "Size range: 5..512",
                     "data_type": "string",
                     "required": true,
                     "primary": true,
@@ -507,10 +485,9 @@
                     "order": 0
                 },
                 "obj_type": {
-                    "description": "Type of new task: url (default) or download",
+                    "description": "Type of new task (Default: url)",
                     "data_type": "string",
                     "required": true,
-                    "primary": true,
                     "default": "url",
                     "value_list": [
                         "url",
@@ -519,61 +496,50 @@
                     "order": 1
                 },
                 "env_os": {
-                    "description": "Operation System",
-                    "verbose": "Allowed values: windows (default)",
+                    "description": "Operation System (Default: windows)",
                     "data_type": "string",
-                    "required": false,
-                    "primary": false,
                     "value_list": [
                         "windows"
                     ],
+                    "default": "windows",
                     "order": 2
                 },
                 "env_bitness": {
-                    "description": "Bitness of Operation System",
-                    "verbose": "Allowed values: 32 (default), 64",
+                    "description": "Bitness of Operation System (Default: 32)",
                     "data_type": "numeric",
-                    "required": false,
-                    "primary": false,
                     "value_list": [
-                        "32",
-                        "64"
+                        32,
+                        64
                     ],
+                    "default": 32,
                     "order": 3
                 },
                 "env_version": {
-                    "description": "Version of OS",
-                    "verbose": "Allowed values: vista, 7 (default), 8.1, 10",
+                    "description": "Version of OS (Default: 7)",
                     "data_type": "string",
-                    "required": false,
-                    "primary": false,
                     "value_list": [
                         "vista",
                         "7",
                         ".8.1",
                         "10"
                     ],
+                    "default": "7",
                     "order": 4
                 },
                 "env_type": {
-                    "description": "Environment preset type",
-                    "verbose": "Allowed values: clean, office, complete (default)",
+                    "description": "Environment preset type (Default: complete)",
                     "data_type": "string",
-                    "required": false,
-                    "primary": false,
                     "value_list": [
                         "clean",
                         "office",
                         "complete"
                     ],
+                    "default": "complete",
                     "order": 5
                 },
                 "opt_network_geo": {
-                    "description": "Geo location option",
-                    "verbose": "Allowed values: fastest (default), AU, BR, DE, CH, FR, KR, US, RU, GB, IT",
+                    "description": "Geo location option (Default: fastest)",
                     "data_type": "string",
-                    "required": false,
-                    "primary": false,
                     "value_list": [
                         "fastest",
                         "AU",
@@ -587,35 +553,29 @@
                         "GB",
                         "IT"
                     ],
+                    "default": "fastest",
                     "order": 6
                 },
                 "opt_timeout": {
-                    "description": "Timeout option (seconds)",
-                    "verbose": "Size range: 10-660. Default value: 60",
+                    "description": "Timeout option (seconds) (Default: 60)",
                     "data_type": "numeric",
-                    "required": false,
-                    "primary": false,
+                    "default": 60,
                     "order": 7
                 },
                 "opt_privacy_type": {
-                    "description": "Privacy settings",
-                    "verbose": "Allowed values: public, bylink (default), owner",
+                    "description": "Privacy settings (Default: bylink)",
                     "data_type": "string",
-                    "required": false,
-                    "primary": false,
                     "value_list": [
                         "bylink",
                         "public",
                         "owner"
                     ],
+                    "default": "bylink",
                     "order": 8
                 },
                 "obj_ext_startfolder": {
-                    "description": "Start object from",
-                    "verbose": "Allowed values: desktop, home, downloads, appdata, temp (default), windows, root",
+                    "description": "Start object from (Default: temp)",
                     "data_type": "string",
-                    "required": false,
-                    "primary": false,
                     "value_list": [
                         "desktop",
                         "home",
@@ -625,60 +585,47 @@
                         "windows",
                         "root"
                     ],
+                    "default": "temp",
                     "order": 9
                 },
                 "obj_ext_cmd": {
                     "description": "Optional command line",
-                    "verbose": "Size range: 2..256",
                     "data_type": "string",
-                    "required": false,
-                    "primary": false,
                     "order": 10
                 },
                 "obj_ext_browser": {
-                    "description": "Browser name",
-                    "verbose": "Allowed values: Google Chrome, Mozilla Firefox, Opera, Internet Explorer (default)",
+                    "description": "Browser name (Default: Internet Explorer)",
                     "data_type": "string",
-                    "required": false,
-                    "primary": false,
                     "value_list": [
                         "Google Chrome",
                         "Mozilla Firefox",
                         "Opera",
                         "Internet Explorer"
                     ],
+                    "default": "Internet Explorer",
                     "order": 11
                 },
                 "obj_ext_useragent": {
                     "description": "User agent",
-                    "verbose": "Size range: 2..256",
                     "data_type": "string",
-                    "required": false,
-                    "primary": false,
                     "order": 12
                 },
                 "obj_ext_elevateprompt": {
                     "description": "Encounter UAC prompts",
-                    "verbose": "Default value: true",
                     "data_type": "boolean",
-                    "required": false,
-                    "primary": false,
+                    "default": true,
                     "order": 13
                 },
                 "obj_ext_extension": {
                     "description": "Change extension to valid",
-                    "verbose": "Default value: true",
                     "data_type": "boolean",
-                    "required": false,
-                    "primary": false,
+                    "default": true,
                     "order": 14
                 },
                 "opt_privacy_hidesource": {
                     "description": "Option for hiding of source URL",
-                    "verbose": "Default value: false",
                     "data_type": "boolean",
-                    "required": false,
-                    "primary": false,
+                    "default": false,
                     "order": 15
                 }
             },
@@ -699,7 +646,7 @@
                         "url",
                         "download"
                     ],
-                    "column_name": "type",
+                    "column_name": "Type",
                     "column_order": 1
                 },
                 {
