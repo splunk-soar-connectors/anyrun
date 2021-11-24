@@ -67,13 +67,37 @@ class AnyrunConnector(BaseConnector):
                     error_code = e.args[0]
                     error_msg = e.args[1]
                 elif len(e.args) == 1:
-                    error_code = ANYRUN_ERR_CODE_MSG
                     error_msg = e.args[0]
         except:
-            error_code = ANYRUN_ERR_CODE_MSG
-            error_msg = ANYRUN_ERR_MSG_UNAVAILABLE
+            pass
 
         return "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
+
+    def _validate_integer(self, action_result, parameter, key, allow_zero=False):
+        """
+        Validate an integer.
+
+        :param action_result: Action result or BaseConnector object
+        :param parameter: input parameter
+        :param key: input parameter message key
+        :allow_zero: whether zero should be considered as valid value or not
+        :return: status phantom.APP_ERROR/phantom.APP_SUCCESS, integer value of the parameter or None in case of failure
+        """
+        if parameter is not None:
+            try:
+                if not float(parameter).is_integer():
+                    return action_result.set_status(phantom.APP_ERROR, VALID_INT_MSG.format(param=key)), None
+
+                parameter = int(parameter)
+            except:
+                return action_result.set_status(phantom.APP_ERROR, VALID_INT_MSG.format(param=key)), None
+
+            if parameter < 0:
+                return action_result.set_status(phantom.APP_ERROR, NON_NEG_INT_MSG.format(param=key)), None
+            if not allow_zero and parameter == 0:
+                return action_result.set_status(phantom.APP_ERROR, NON_NEG_NON_ZERO_INT_MSG.format(param=key)), None
+
+        return phantom.APP_SUCCESS, parameter
 
     def _process_empty_response(self, response, action_result):
         if response.status_code == 200:
@@ -276,6 +300,20 @@ class AnyrunConnector(BaseConnector):
         self.save_progress("Detonating file {}".format(file_path))
 
         data = {k: v for k, v in param.items() if k not in ["context", "vault_id"]}
+        if 'opt_timeout' in data:
+            ret_val, data['opt_timeout'] = self._validate_integer(
+                action_result, data['opt_timeout'], 'opt_timeout'
+            )
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
+
+        if 'env_bitness' in data:
+            ret_val, data['env_bitness'] = self._validate_integer(
+                action_result, data['env_bitness'], 'env_bitness'
+            )
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
+
         files = [
             ('file', open(file_path, 'rb'))
         ]
@@ -309,6 +347,19 @@ class AnyrunConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, ANYRUN_ERR_INVALID_PARAM.format(name="obj_type"))
 
         data = {k: v for k, v in param.items() if k not in ["context"]}
+        if 'opt_timeout' in data:
+            ret_val, data['opt_timeout'] = self._validate_integer(
+                action_result, data['opt_timeout'], 'opt_timeout'
+            )
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
+
+        if 'env_bitness' in data:
+            ret_val, data['env_bitness'] = self._validate_integer(
+                action_result, data['env_bitness'], 'env_bitness'
+            )
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
 
         self.save_progress("Detonating URL ({})".format(obj_type))
         # make rest call

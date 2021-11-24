@@ -13,15 +13,26 @@
 [comment]: # "  either express or implied. See the License for the specific language governing permissions"
 [comment]: # "  and limitations under the License."
 [comment]: # ""
-# Splunk> Phantom
-
-Welcome to the open-source repository for Splunk> Phantom's anyrun App.
-
-Please have a look at our [Contributing Guide](https://github.com/Splunk-SOAR-Apps/.github/blob/main/.github/CONTRIBUTING.md) if you are interested in contributing, raising issues, or learning more about open-source Phantom apps.
-
 ## Version
-AnyRun app is compatible with Phantom **4.9.39220+**
+AnyRun app is compatible with Phantom **5.0.0+**
 
-## Legal and License
+## Playbook Backward Compatibility
 
-This Phantom App is licensed under the Apache 2.0 license. Please see our [Contributing Guide](https://github.com/Splunk-SOAR-Apps/.github/blob/main/.github/CONTRIBUTING.md#legal-notice) for further details.
+-   The below-mentioned action parameters have been added in the 'detonate file' action. Hence, it is requested to the
+    end-user to please update their existing playbooks by re-inserting | modifying | deleting the corresponding action blocks or by providing appropriate values to these action parameters to ensure the correct functioning of the playbooks created on the earlier versions of the app.
+	-   env\_os
+	-   env\_bitness
+	-   env\_version
+	-   env\_type
+	-   opt\_network\_geo
+	-   opt\_timeout
+	-   opt\_privacy\_type
+	-   obj\_ext\_startfolder
+	-   obj\_ext\_cmd
+	-   obj\_ext\_elevateprompt
+	-   obj\_ext\_extension
+
+-   The below-mentioned action has been added. Hence, it is requested to the end-user to please update their
+    existing playbooks by inserting | modifying | deleting the corresponding action blocks for this action on the earlier versions of the app.
+	-   detonate url
+

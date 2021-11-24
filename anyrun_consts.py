@@ -25,3 +25,8 @@ ANYRUN_ERR_MSG_UNAVAILABLE = "Error message unavailable. Please check the asset 
 ANYRUN_PARSE_ERR_MSG = "Unable to parse the error message. Please check the asset configuration and|or action parameters"
 ANYRUN_ERR_UNABLE_TO_FETCH_FILE = "Unable to fetch the {key} file"
 ANYRUN_ERR_INVALID_PARAM = "Parameter {name} is invalid. Please check action parameters documentation"
+
+# Constants relating to 'validate_integer'
+VALID_INT_MSG = "Please provide a valid integer value in the '{param}' parameter"
+NON_NEG_NON_ZERO_INT_MSG = "Please provide a valid non-zero positive integer value in '{param}' parameter"
+NON_NEG_INT_MSG = "Please provide a valid non-negative integer value in the '{param}' parameter"
