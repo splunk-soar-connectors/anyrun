@@ -337,8 +337,7 @@ class AnyrunConnector(BaseConnector):
         return action_result.set_status(phantom.APP_SUCCESS, "Successfully detonated file")
 
     def _handle_detonate_url(self, param):
-        self.save_progress("In action handler for: {0}".format(
-            self.get_action_identifier()))
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
         action_result = self.add_action_result(ActionResult(dict(param)))
 
         obj_type = param["obj_type"]

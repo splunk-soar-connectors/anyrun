@@ -180,7 +180,6 @@
         {
             "action": "detonate file",
             "description": "Run the file in the sandbox and returns the ID of created task",
-            "verbose": "For the 'opt_timeout' parameter Size range: 10-660. For the 'obj_ext_cmd' Size range: 2-256.",
             "type": "investigate",
             "identifier": "detonate_file",
             "read_only": true,
@@ -257,7 +256,7 @@
                     "order": 5
                 },
                 "opt_timeout": {
-                    "description": "Timeout option (seconds) (Default: 60)",
+                    "description": "Timeout option (seconds) (Default: 60) (Size range: 10-660)",
                     "data_type": "numeric",
                     "default": 60,
                     "order": 6
@@ -289,7 +288,7 @@
                     "order": 8
                 },
                 "obj_ext_cmd": {
-                    "description": "Optional command line",
+                    "description": "Optional command line (Size range: 2-256)",
                     "data_type": "string",
                     "order": 9
                 },
@@ -469,13 +468,12 @@
         {
             "action": "detonate url",
             "description": "Load a URL for analysis and returns the ID of created task",
-            "verbose": "For the 'obj_url' parameter Size range: 5-512. For the 'opt_timeout' Size range: 10-660. For the 'obj_ext_cmd' Size range: 2-256. For the 'obj_ext_useragent' Size range: 2-256.",
             "type": "investigate",
             "identifier": "detonate_url",
             "read_only": true,
             "parameters": {
                 "obj_url": {
-                    "description": "URL to detonate",
+                    "description": "URL to detonate (Size range: 5-512)",
                     "data_type": "string",
                     "required": true,
                     "primary": true,
@@ -557,7 +555,7 @@
                     "order": 6
                 },
                 "opt_timeout": {
-                    "description": "Timeout option (seconds) (Default: 60)",
+                    "description": "Timeout option (seconds) (Default: 60) (Size range: 10-660)",
                     "data_type": "numeric",
                     "default": 60,
                     "order": 7
@@ -589,7 +587,7 @@
                     "order": 9
                 },
                 "obj_ext_cmd": {
-                    "description": "Optional command line",
+                    "description": "Optional command line (Size range: 2-256)",
                     "data_type": "string",
                     "order": 10
                 },
@@ -606,7 +604,7 @@
                     "order": 11
                 },
                 "obj_ext_useragent": {
-                    "description": "User agent",
+                    "description": "User agent (Size range: 2-256)",
                     "data_type": "string",
                     "order": 12
                 },
