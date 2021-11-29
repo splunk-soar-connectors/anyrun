@@ -2,24 +2,37 @@
 #
 # Copyright (c) 2021 Splunk Inc.
 #
-# Licensed under Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0.txt)
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed under
+# the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+# either express or implied. See the License for the specific language governing permissions
+# and limitations under the License.
 
 # Python 3 Compatibility imports
 from __future__ import print_function, unicode_literals
 
 # Phantom App imports
 import phantom.app as phantom
-from phantom.base_connector import BaseConnector
-from phantom.action_result import ActionResult
 import phantom.rules as ph_rules
+from phantom.action_result import ActionResult
+from phantom.base_connector import BaseConnector
+
 try:
     from urllib.parse import unquote
 except:
     from urllib import unquote
-from anyrun_consts import *
-import requests
+
 import json
+
+import requests
 from bs4 import BeautifulSoup
+
+from anyrun_consts import *
 
 
 class RetVal(tuple):
@@ -46,32 +59,45 @@ class AnyrunConnector(BaseConnector):
         :return: error message
         """
 
+        error_code = ANYRUN_ERR_CODE_MSG
+        error_msg = ANYRUN_ERR_MSG_UNAVAILABLE
         try:
             if e.args:
                 if len(e.args) > 1:
                     error_code = e.args[0]
                     error_msg = e.args[1]
                 elif len(e.args) == 1:
-                    error_code = ANYRUN_ERR_CODE_MSG
                     error_msg = e.args[0]
-            else:
-                error_code = ANYRUN_ERR_CODE_MSG
-                error_msg = ANYRUN_ERR_MSG_UNAVAILABLE
         except:
-            error_code = ANYRUN_ERR_CODE_MSG
-            error_msg = ANYRUN_ERR_MSG_UNAVAILABLE
+            pass
 
-        try:
-            if error_code in ANYRUN_ERR_CODE_MSG:
-                error_text = "Error Message: {0}".format(error_msg)
-            else:
-                error_text = "Error Code: {0}. Error Message: {1}".format(
-                    error_code, error_msg)
-        except:
-            self.debug_print(ANYRUN_PARSE_ERR_MSG)
-            error_text = ANYRUN_PARSE_ERR_MSG
+        return "Error Code: {0}. Error Message: {1}".format(error_code, error_msg)
 
-        return error_text
+    def _validate_integer(self, action_result, parameter, key, allow_zero=False):
+        """
+        Validate an integer.
+
+        :param action_result: Action result or BaseConnector object
+        :param parameter: input parameter
+        :param key: input parameter message key
+        :allow_zero: whether zero should be considered as valid value or not
+        :return: status phantom.APP_ERROR/phantom.APP_SUCCESS, integer value of the parameter or None in case of failure
+        """
+        if parameter is not None:
+            try:
+                if not float(parameter).is_integer():
+                    return action_result.set_status(phantom.APP_ERROR, VALID_INT_MSG.format(param=key)), None
+
+                parameter = int(parameter)
+            except:
+                return action_result.set_status(phantom.APP_ERROR, VALID_INT_MSG.format(param=key)), None
+
+            if parameter < 0:
+                return action_result.set_status(phantom.APP_ERROR, NON_NEG_INT_MSG.format(param=key)), None
+            if not allow_zero and parameter == 0:
+                return action_result.set_status(phantom.APP_ERROR, NON_NEG_NON_ZERO_INT_MSG.format(param=key)), None
+
+        return phantom.APP_SUCCESS, parameter
 
     def _process_empty_response(self, response, action_result):
         if response.status_code == 200:
@@ -205,11 +231,6 @@ class AnyrunConnector(BaseConnector):
     def _handle_test_connectivity(self, param):
         action_result = self.add_action_result(ActionResult(dict(param)))
 
-        # NOTE: test connectivity does _NOT_ take any parameters
-        # i.e. the param dictionary passed to this handler will be empty.
-        # Also typically it does not add any data into an action_result either.
-        # The status and progress messages are more important.
-
         self.save_progress("Connecting to endpoint")
         # make rest call
         ret_val, response = self._make_rest_call(
@@ -217,7 +238,6 @@ class AnyrunConnector(BaseConnector):
         )
 
         if phantom.is_fail(ret_val):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
             self.save_progress("Test Connectivity Failed")
             return action_result.get_status()
 
@@ -238,7 +258,6 @@ class AnyrunConnector(BaseConnector):
         )
 
         if phantom.is_fail(ret_val):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
             return action_result.get_status()
 
         self.save_progress("Successfully fetched report for {}".format(id))
@@ -246,7 +265,8 @@ class AnyrunConnector(BaseConnector):
             action_result.add_data(response['data'])
         except Exception as e:
             err = self._get_error_message_from_exception(e)
-            return action_result.set_status(phantom.APP_ERROR, "Error occurred while processing response from server. {}".format(err))
+            return action_result.set_status(phantom.APP_ERROR,
+                "Error occurred while processing response from server. {}".format(err))
 
         return action_result.set_status(phantom.APP_SUCCESS, "Successfully fetched report for {}".format(id))
 
@@ -262,10 +282,12 @@ class AnyrunConnector(BaseConnector):
             vault_meta_info = list(vault_meta_info)
             if not success or not vault_meta_info:
                 error_msg = " Error Details: {}".format(unquote(message)) if message else ''
-                return action_result.set_status(phantom.APP_ERROR, "{}. {}".format(ANYRUN_ERR_UNABLE_TO_FETCH_FILE.format(key="vault meta info"), error_msg))
+                return action_result.set_status(phantom.APP_ERROR,
+                    "{}. {}".format(ANYRUN_ERR_UNABLE_TO_FETCH_FILE.format(key="vault meta info"), error_msg))
         except Exception as e:
             err = self._get_error_message_from_exception(e)
-            return action_result.set_status(phantom.APP_ERROR, "{}. {}".format(ANYRUN_ERR_UNABLE_TO_FETCH_FILE.format(key="vault meta info"), err))
+            return action_result.set_status(phantom.APP_ERROR,
+                "{}. {}".format(ANYRUN_ERR_UNABLE_TO_FETCH_FILE.format(key="vault meta info"), err))
 
         try:
             # phantom vault file path
@@ -276,17 +298,32 @@ class AnyrunConnector(BaseConnector):
             return action_result.set_status(phantom.APP_ERROR, ANYRUN_ERR_UNABLE_TO_FETCH_FILE.format(key="path"))
 
         self.save_progress("Detonating file {}".format(file_path))
+
+        data = {k: v for k, v in param.items() if k not in ["context", "vault_id"]}
+        if 'opt_timeout' in data:
+            ret_val, data['opt_timeout'] = self._validate_integer(
+                action_result, data['opt_timeout'], 'opt_timeout'
+            )
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
+
+        if 'env_bitness' in data:
+            ret_val, data['env_bitness'] = self._validate_integer(
+                action_result, data['env_bitness'], 'env_bitness'
+            )
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
+
         files = [
             ('file', open(file_path, 'rb'))
         ]
 
         # make rest call
         ret_val, response = self._make_rest_call(
-            ANYRUN_DETONATE_FILE_ENDPOINT, action_result, method="post", files=files, headers=self._headers
+            ANYRUN_DETONATE_ENDPOINT, action_result, method="post", data=data, files=files, headers=self._headers
         )
 
         if phantom.is_fail(ret_val):
-            # the call to the 3rd party device or service failed, action result should contain all the error details
             return action_result.get_status()
 
         self.save_progress("Successfully detonated file")
@@ -294,9 +331,53 @@ class AnyrunConnector(BaseConnector):
             action_result.add_data(response['data'])
         except Exception as e:
             err = self._get_error_message_from_exception(e)
-            return action_result.set_status(phantom.APP_ERROR, "Error occurred while processing response from server. {}".format(err))
+            return action_result.set_status(phantom.APP_ERROR,
+                "Error occurred while processing response from server. {}".format(err))
 
         return action_result.set_status(phantom.APP_SUCCESS, "Successfully detonated file")
+
+    def _handle_detonate_url(self, param):
+        self.save_progress("In action handler for: {0}".format(self.get_action_identifier()))
+        action_result = self.add_action_result(ActionResult(dict(param)))
+
+        obj_type = param["obj_type"]
+        # Validating input params
+        if obj_type not in ["url", "download"]:
+            return action_result.set_status(phantom.APP_ERROR, ANYRUN_ERR_INVALID_PARAM.format(name="obj_type"))
+
+        data = {k: v for k, v in param.items() if k not in ["context"]}
+        if 'opt_timeout' in data:
+            ret_val, data['opt_timeout'] = self._validate_integer(
+                action_result, data['opt_timeout'], 'opt_timeout'
+            )
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
+
+        if 'env_bitness' in data:
+            ret_val, data['env_bitness'] = self._validate_integer(
+                action_result, data['env_bitness'], 'env_bitness'
+            )
+            if phantom.is_fail(ret_val):
+                return action_result.get_status()
+
+        self.save_progress("Detonating URL ({})".format(obj_type))
+        # make rest call
+        ret_val, response = self._make_rest_call(
+            ANYRUN_DETONATE_ENDPOINT, action_result, method="post", data=data, files=[], headers=self._headers
+        )
+
+        if phantom.is_fail(ret_val):
+            return action_result.get_status()
+
+        self.save_progress("Successfully detonated URL ({})".format(obj_type))
+        try:
+            action_result.add_data(response['data'])
+        except Exception as e:
+            err = self._get_error_message_from_exception(e)
+            return action_result.set_status(phantom.APP_ERROR,
+                "Error occurred while processing response from server. {}".format(err))
+
+        return action_result.set_status(phantom.APP_SUCCESS, "Successfully detonated URL ({})".format(obj_type))
 
     def handle_action(self, param):
         ret_val = phantom.APP_SUCCESS
@@ -315,12 +396,22 @@ class AnyrunConnector(BaseConnector):
         elif action_id == 'detonate_file':
             ret_val = self._handle_detonate_file(param)
 
+        elif action_id == 'detonate_url':
+            ret_val = self._handle_detonate_url(param)
+
         return ret_val
 
     def initialize(self):
         # Load the state in initialize, use it to store data
         # that needs to be accessed across actions
         self._state = self.load_state()
+
+        if not isinstance(self._state, dict):
+            self.debug_print("Resetting the state file with the default format")
+            self._state = {
+                "app_version": self.get_app_json().get('app_version')
+            }
+            return self.set_status(phantom.APP_ERROR, STATE_FILE_CORRUPT_ERR)
 
         # get the asset config
         config = self.get_config()
@@ -343,8 +434,10 @@ class AnyrunConnector(BaseConnector):
 
 
 def main():
-    import pudb
     import argparse
+    import sys
+
+    import pudb
 
     pudb.set_trace()
 
@@ -389,7 +482,7 @@ def main():
             session_id = r2.cookies['sessionid']
         except Exception as e:
             print("Unable to get session id from the platform. Error: " + str(e))
-            exit(1)
+            sys.exit(1)
 
     with open(args.input_test_json) as f:
         in_json = f.read()
@@ -406,7 +499,7 @@ def main():
         ret_val = connector._handle_action(json.dumps(in_json), None)
         print(json.dumps(json.loads(ret_val), indent=4))
 
-    exit(0)
+    sys.exit(0)
 
 
 if __name__ == '__main__':
