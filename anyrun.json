@@ -16,7 +16,7 @@
         }
     ],
     "license": "Copyright (c) 2021 Splunk Inc.",
-    "app_version": "1.0.0",
+    "app_version": "2.0.0",
     "utctime_updated": "2020-03-19T10:46:08.767570Z",
     "package_name": "phantom_anyrun",
     "main_module": "anyrun_connector.py",
@@ -180,9 +180,9 @@
         {
             "action": "detonate file",
             "description": "Run the file in the sandbox and returns the ID of created task",
-            "type": "investigate",
+            "type": "generic",
             "identifier": "detonate_file",
-            "read_only": true,
+            "read_only": false,
             "parameters": {
                 "vault_id": {
                     "description": "Vault ID of the file to detonate",
@@ -468,9 +468,9 @@
         {
             "action": "detonate url",
             "description": "Load a URL for analysis and returns the ID of created task",
-            "type": "investigate",
+            "type": "generic",
             "identifier": "detonate_url",
-            "read_only": true,
+            "read_only": false,
             "parameters": {
                 "obj_url": {
                     "description": "URL to detonate (Size range: 5-512)",
