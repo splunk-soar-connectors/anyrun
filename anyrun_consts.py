@@ -31,4 +31,7 @@ VALID_INT_MSG = "Please provide a valid integer value in the '{param}' parameter
 NON_NEG_NON_ZERO_INT_MSG = "Please provide a valid non-zero positive integer value in '{param}' parameter"
 NON_NEG_INT_MSG = "Please provide a valid non-negative integer value in the '{param}' parameter"
 
-STATE_FILE_CORRUPT_ERR = "Error occurred while loading the state file due to its unexpected format. Resetting the state file with the default format. Please try again."
+STATE_FILE_CORRUPT_ERR = (
+    "Error occurred while loading the state file due to its unexpected format. "
+    "Resetting the state file with the default format. Please try again."
+)
