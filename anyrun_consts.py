@@ -1,6 +1,6 @@
 # File: anyrun_consts.py
 #
-# Copyright (c) 2021 Splunk Inc.
+# Copyright (c) 2021-2025 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
 #
 #
 # API Endpoints
-ANYRUN_TEST_CONNECTIVITY_ENDPOINT = 'environment'
-ANYRUN_DETONATE_ENDPOINT = 'analysis'
-ANYRUN_GET_REPORT_ENDPOINT = 'analysis/{taskid}'
+ANYRUN_TEST_CONNECTIVITY_ENDPOINT = "environment"
+ANYRUN_DETONATE_ENDPOINT = "analysis"
+ANYRUN_GET_REPORT_ENDPOINT = "analysis/{taskid}"
 
 # Messages
 ANYRUN_ERR_CODE_MSG = "Error code unavailable"
