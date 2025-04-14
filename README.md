@@ -1,7 +1,7 @@
 # AnyRun
 
 Publisher: Splunk Community \
-Connector Version: 2.0.2 \
+Connector Version: 2.0.3 \
 Product Vendor: Any.Run \
 Product Name: Any.Run \
 Minimum Product Version: 5.0.0
